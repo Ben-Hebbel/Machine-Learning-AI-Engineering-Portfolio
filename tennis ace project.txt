@@ -1,0 +1,80 @@
+import codecademylib3_seaborn
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# load and investigate the data here:
+
+tennis = pd.read_csv('tennis_stats.csv')
+print(tennis.head(5))
+print(tennis.info())
+
+# perform exploratory analysis here:
+
+'''X = tennis['BreakPointsOpportunities']
+y = tennis['Winnings']
+plt.scatter(X,y)
+plt.show()'''
+
+
+## perform single feature linear regressions here:
+regression = LinearRegression()
+'''X = X.values.reshape(-1,1) 
+regression.fit(X,y)
+predict = regression.predict(X)
+plt.plot(X,predict, color = 'r')
+plt.show()'''
+
+
+x2 = tennis['Wins']
+y2 = tennis['TotalServicePointsWon']
+plt.scatter(x2,y2, color = 'grey')
+plt.show
+x2 = x2.values.reshape(-1,1)
+regression.fit(x2,y2)
+
+y2_predict = regression.predict(x2)
+
+plt.plot(x2, y2_predict, color = 'orange')
+plt.show()
+
+
+
+
+## perform two feature linear regressions here:
+feat = tennis[['BreakPointsOpportunities', 'FirstServeReturnPointsWon']]
+winnings = tennis[['Winnings']]
+feat = np.array(feat)
+winnings = np.array(winnings)
+split = train_test_split(feat, winnings)
+
+
+feat_train, feat_test, winnings_train, winnings_test = train_test_split(feat, winnings, train_size = 0.8, test_size=0.2)
+
+feat_fit = regression.fit(feat_train,winnings_train)
+
+winnings_predict = regression.predict(feat_test)
+plt.scatter(feat[:, 0], winnings, color = 'gray')
+plt.plot(feat_test[:, 0], winnings_predict, color='orange')
+plt.xlabel('BreakPointsOpportunities')
+plt.ylabel('Predicted Winnings')
+plt.show()
+
+
+## perform multiple feature linear regressions here:
+
+features = tennis[['FirstServe','FirstServePointsWon','FirstServeReturnPointsWon',
+'SecondServePointsWon','SecondServeReturnPointsWon','Aces',
+'BreakPointsConverted','BreakPointsFaced','BreakPointsOpportunities',
+'BreakPointsSaved','DoubleFaults','ReturnGamesPlayed','ReturnGamesWon',
+'ReturnPointsWon','ServiceGamesPlayed','ServiceGamesWon','TotalPointsWon',
+'TotalServicePointsWon']]
+outcome = tennis[['Winnings']]
+features = np.array(features)
+outcome = np.array(outcome)
+features_train, features_test, outcome_train, outcome_test = train_test_split(features, outcome, test_size = 0.2)
+regression.fit(features_train, outcome_train)
+print('Train score', regression.score(features_train, outcome_train))
+print('Test score', regression.score(features_test, outcome_test))

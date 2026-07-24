@@ -1,0 +1,53 @@
+import codecademylib3_seaborn
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.cluster import KMeans
+
+iris = datasets.load_iris()
+
+samples = iris.data
+
+model = KMeans(n_clusters=3)
+
+model.fit(samples)
+
+labels = model.predict(samples)
+
+print(labels)
+
+x = samples[:,0]
+y = samples[:,1]
+
+plt.scatter(x,y, c = labels, alpha = 0.5)
+
+plt.xlabel('sepal length (cm)')
+plt.ylabel('sepal width (cm)')
+
+plt.show()
+
+#Evaluate
+labels = [iris.target_names[s] for s in model.predict(samples)]
+
+# Code starts here:
+species = [iris.target_names[t] for t in list(target)]
+
+df = pd.DataFrame({'labels': labels, 'species':species})
+print(df)
+
+ct = pd.crosstab(df['labels'], df['species'])
+print(ct)
+
+#ploting Inertia to find best K
+num_clusters = list(range(1,9))
+inertias = []
+
+for k in num_clusters: 
+  model = KMeans(n_clusters = k)
+  model.fit(samples)
+  inertias.append(model.inertia_)
+
+plt.plot(num_clusters, inertias, '-o')
+
+plt.xlabel('number of clusters (k)')
+plt.ylabel('inertia')
+plt.show()
